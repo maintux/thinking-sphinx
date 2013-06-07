@@ -350,7 +350,7 @@ module ThinkingSphinx
             :docs   => [string.to_s],
             :words  => query,
             :index  => index.split(',').first.strip
-          }.merge(options[:excerpt_options] || {})
+          }.merge(model.sphinx_index_options[:excerpt_options]||{}).merge(options[:excerpt_options] || {})
         ).first
       end
     end
