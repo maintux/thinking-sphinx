@@ -344,13 +344,16 @@ module ThinkingSphinx
       populate
 
       index = options[:index] || "#{model.core_index_names.first}"
+      if model && model.sphinx_indexes && model.sphinx_indexes.first
+        excerpt_options = model.sphinx_indexes.first.local_options[:excerpt_options]
+      end
       take_client do |client|
         client.excerpts(
           {
             :docs   => [string.to_s],
             :words  => query,
             :index  => index.split(',').first.strip
-          }.merge(model.sphinx_index_options[:excerpt_options]||{}).merge(options[:excerpt_options] || {})
+          }.merge(excerpt_options||{}).merge(options[:excerpt_options] || {})
         ).first
       end
     end
